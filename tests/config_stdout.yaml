@@ -1,0 +1,5 @@
+vault_url: "http://localhost:8200"
+init:  
+  auto_unseal: false
+  destination:
+    type: stdout

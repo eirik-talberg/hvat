@@ -1,0 +1,11 @@
+vault_url: "http://localhost:8200"
+init:  
+  auto_unseal: false
+  destination:
+    type: hcp_vault_secrets
+    config:
+      app_name: hvat-test-suite
+      api_version: "2023-06-13"
+      base_url: "https://example.com"
+      organisation_id: "4944d8c7-928d-4d4d-a625-192bbe533942"
+      project_id: "c5670960-c395-4232-9092-3a4e7ffddb62"
