@@ -1,0 +1,5 @@
+.vscode
+dist
+tests
+docker-compose.yaml
+Dockerfile
