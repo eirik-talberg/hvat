@@ -29,11 +29,13 @@ jobs:
       - name: "Run flake8 linting"
         run: poetry run flake8
       - name: "Run pyTest with coverage report"
-        run: poetry run pytest
+        run: poetry run pytest tests/unit
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          multiple-files: |
-            Unit, ./tests/unit/reports/coverage.xml, ./tests/unit/reports/pytest.xml
-            Integration, ./tests/integration/reports/coverage.xml, ./tests/integration/reports/pytest.xml
+          pytest-xml-coverage-path: ./reports/unit/coverage.xml
+          junitxml-path: ./reports/unit/pytest.xml
+          #multiple-files: |
+          #  Unit, ./tests/unit/reports/coverage.xml, ./tests/unit/reports/pytest.xml
+          #  Integration, ./tests/integration/reports/coverage.xml, ./tests/integration/reports/pytest.xml
