@@ -65,6 +65,7 @@ class TestInitWithStdout:
         return Client(hvat_config["vault_url"])
 
     def test_should_write_root_token_to_console(self, vault, vault_client, hvat_config):
+        print(vault.logs())
         f = io.StringIO()
         with contextlib.redirect_stdout(f):
             init_and_push(vault_client, hvat_config)
