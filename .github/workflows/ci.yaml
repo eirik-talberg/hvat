@@ -1,10 +1,9 @@
 name: CI
 on:
   push:
-    branches-ignore: [ "main", "next"]
+    branches-ignore: [ "main", "next" ]
   pull_request:
     branches: [ "main" ]
-  pull_request_target:
     types:
       - opened
       - edited
@@ -35,5 +34,6 @@ jobs:
         uses: MishaKav/pytest-coverage-comment@main
         with:
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          pytest-xml-coverage-path: ./reports/coverage.xml
-          junitxml-path: ./reports/pytest.xml
+          multiple-files: |
+            Unit, ./tests/unit/reports/coverage.xml, ./tests/unit/reports/pytest.xml
+            Integration, ./tests/integration/reports/coverage.xml, ./tests/integration/reports/pytest.xml

@@ -1,4 +1,4 @@
-def print_initialization_result(config: dict, result: dict):
+def print_initialization_result(_config: dict, result: dict):
     print("====VAULT INIT COMPLETE====")
     print(f"Root token: {result['root_token']}")
     for key_id, key in result["unseal_keys"].items():
