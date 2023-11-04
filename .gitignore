@@ -9,3 +9,4 @@ config-example.yaml
 config.yaml
 .coverage
 reports
+.idea

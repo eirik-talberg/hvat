@@ -18,7 +18,7 @@ This is a small CLI tool indented to help automate setting up [HashiCorp Vault](
 HVAT is a CLI application intended to run containerized (i.e. Docker, podman or Kubernetes). The config file location can be supplied through an argument or, preferably, mounted in the image to `/etc/hvat/config.yaml`.
 
 ```
-Usage: python -m hvat.main [OPTIONS] COMMAND [ARGS]...
+Usage: hvat [OPTIONS] COMMAND [ARGS]...
 
 Options:
   --config TEXT  Location of config file to use

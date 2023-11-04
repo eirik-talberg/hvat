@@ -4,4 +4,4 @@ set -e
 
 . /venv/bin/activate
 
-python -m hvat.main $@
+hvat "$@"

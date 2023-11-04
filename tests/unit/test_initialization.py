@@ -2,8 +2,10 @@ import base64
 import contextlib
 import io
 from unittest.mock import Mock, patch
-from hvac import Client
+
 import pytest
+from hvac import Client
+
 from hvat import initialization
 from hvat.errors import InvalidStateError
 
@@ -20,14 +22,14 @@ class TestInitializeVault:
     }
 
     @pytest.fixture
-    def vault_client(monkeypatch):
+    def vault_client(self):
         client = Mock(spec=Client)
         client.sys.is_initialized.return_value = False
         client.sys.initialize.return_value = TestInitializeVault.vault_init_response
         return client
 
-    def test_should_throw_InvalidStateError_when_vault_is_initialized(
-        self, vault_client
+    def test_should_throw_invalid_state_error_when_vault_is_initialized(
+            self, vault_client
     ):
         vault_client.sys.is_initialized.return_value = True
 
@@ -78,7 +80,7 @@ class TestInitAndPush:
     }
 
     @pytest.fixture
-    def vault_client(monkeypatch):
+    def vault_client(self):
         client = Mock(spec=Client)
         client.sys.is_initialized.return_value = False
         client.sys.initialize.return_value = TestInitializeVault.vault_init_response
@@ -86,7 +88,7 @@ class TestInitAndPush:
 
     @patch("hvat.initialization.print_initialization_result")
     def test_should_exit_after_init_when_auto_unseal_enabled(
-        self, print_initialization_result, vault_client
+            self, print_initialization_result, vault_client
     ):
         config = {"init": {"auto_unseal": True}}
 
@@ -102,7 +104,7 @@ class TestInitAndPush:
 
     @patch("hvat.initialization.print_initialization_result")
     def test_should_call_destination_when_auto_unseal_disabled(
-        self, print_initialization_result, vault_client
+            self, print_initialization_result, vault_client
     ):
         config = {"init": {"auto_unseal": False, "destination": {"type": "stdout"}}}
 

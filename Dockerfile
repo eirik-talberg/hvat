@@ -1,11 +1,11 @@
-FROM python:3.11-alpine as base
+FROM python:3.11-alpine AS base
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-FROM base as builder
+FROM base AS builder
 
 ENV PIP_DEFAULT_TIMEOUT=100 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
@@ -23,7 +23,7 @@ RUN poetry export -f requirements.txt | /venv/bin/pip install -r /dev/stdin
 COPY . .
 RUN poetry build && /venv/bin/pip install dist/*.whl
 
-FROM base as final
+FROM base AS final
 
 COPY --from=builder /venv /venv
 COPY entrypoint.sh .
