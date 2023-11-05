@@ -56,6 +56,8 @@ class TestInitWithStdout:
                 time.sleep(1)
                 vault.reload()
 
+        print(client.info())
+        print(client.containers.list())
         yield vault
 
         vault.stop()
