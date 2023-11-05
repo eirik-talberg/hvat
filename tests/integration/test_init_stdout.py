@@ -4,6 +4,7 @@ import time
 
 import docker
 import pytest
+import urllib3.exceptions
 from docker.models.containers import Container
 from from_root import from_root
 from hvac import Client
@@ -60,9 +61,14 @@ class TestInitWithStdout:
     def vault_client(self, hvat_config, vault):
         client = Client(hvat_config["vault_url"])
 
-        while client.sys.read_health_status().status_code != 501:
-            print("Vault is not ready. Sleeping for 0.5s")
-            time.sleep(0.5)
+        status = 0
+        while status != 501:
+            try:
+                status = client.sys.read_health_status().status_code
+            except urllib3.exceptions.ConnectionError as e:
+                print(e)
+                print("Vault is not ready. Sleeping for 0.5s")
+                time.sleep(0.5)
 
         return client
 
