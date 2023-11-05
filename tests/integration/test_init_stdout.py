@@ -16,7 +16,7 @@ class TestInitWithStdout:
 
     @pytest.fixture
     def vault_port(self) -> int:
-        return random.randint(50000, 65000)
+        return random.randint(50000, 65000)  # noqa
 
     @pytest.fixture
     def hvat_config(self, vault_port: int) -> dict:
@@ -48,20 +48,17 @@ class TestInitWithStdout:
         }
         vault = client.containers.run("hashicorp/vault:1.14.4", "server", **config)
 
-        wait = True
-        while wait:
-            if vault.status == "running":
-                wait = False
-            else:
-                time.sleep(1)
-                vault.reload()
+        while "Vault server started!" not in str(vault.logs()):
+            print("Vault is not ready. Sleeping for 0.5s")
+            time.sleep(0.5)
+            vault.reload()
 
         yield vault
 
         vault.stop()
 
     @pytest.fixture
-    def vault_client(self, hvat_config):
+    def vault_client(self, hvat_config, vault):
         return Client(hvat_config["vault_url"])
 
     def test_should_write_root_token_to_console(self, vault, vault_client, hvat_config):
@@ -72,11 +69,13 @@ class TestInitWithStdout:
         assert "Root token:" in f.getvalue()
 
     def test_should_set_vault_to_initialized(self, vault, vault_client, hvat_config):
-        init_and_push(vault_client, hvat_config)
+        with contextlib.redirect_stdout(io.StringIO()):
+            init_and_push(vault_client, hvat_config)
 
         assert vault_client.sys.is_initialized() is True
 
     def test_should_set_vault_to_sealed(self, vault, vault_client, hvat_config):
-        init_and_push(vault_client, hvat_config)
+        with contextlib.redirect_stdout(io.StringIO()):
+            init_and_push(vault_client, hvat_config)
 
         assert vault_client.sys.is_sealed() is True
