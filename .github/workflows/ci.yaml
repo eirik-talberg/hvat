@@ -1,0 +1,38 @@
+name: CI
+on:
+  push:
+    branches-ignore: [ "main", "next" ]
+  pull_request:
+    branches: [ "main" ]
+    types:
+      - opened
+      - edited
+      - synchronize
+  workflow_dispatch:
+  workflow_call:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        if: github.event_name == 'pull_request'
+      - name: Install poetry
+        run: pipx install poetry
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: "poetry"
+      - run: poetry install
+      - name: "Run flake8 linting"
+        run: poetry run flake8
+      - name: "Run pyTest with coverage report"
+        run: poetry run pytest
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          pytest-xml-coverage-path: ./reports/coverage.xml
+          junitxml-path: ./reports/pytest.xml

@@ -1,0 +1,46 @@
+{
+    "branches": [
+        "main",
+        {
+            "name": "next",
+            "prerelease": true
+        }
+    ],
+    "plugins": [
+        "@semantic-release/changelog",
+        [
+            "@semantic-release/exec",
+            {
+                "prepareCmd": "poetry version ${nextRelease.version}",
+                "publishCmd": "poetry build; docker build --tag eirik-talberg/hvat ."
+            }
+        ],
+        [
+            "@semantic-release-plus/docker",
+            {
+                "name": {
+                    "registry": "ghcr.io",
+                    "namespace": "eirik-talberg",
+                    "repository": "hvat"
+                },
+                "publishChannelTag": false
+            }
+        ],
+        [
+            "@semantic-release/git",
+            {
+                "assets": [
+                    "CHANGELOG.md"
+                ]
+            }
+        ],
+        [
+            "@semantic-release/github",
+            {
+                "assets": [
+                    "dist/*"
+                ]
+            }
+        ]
+    ]
+}

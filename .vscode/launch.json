@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Init (Stdout)",
+            "type": "python",
+            "request": "launch",
+            "module": "hvat.main",
+            "args": ["--config", "tests/config_stdout.yaml", "init"],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Init (HCP)",
+            "type": "python",
+            "request": "launch",
+            "module": "hvat.main",
+            "args": ["--config", "tests/config_hcp.yaml", "init"],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}
