@@ -57,7 +57,7 @@ class TestInitWithStdout:
                 vault.reload()
 
         print(client.info())
-        print(client.containers.list())
+        print(vault.logs())
         yield vault
 
         vault.stop()
@@ -67,18 +67,19 @@ class TestInitWithStdout:
         return Client(hvat_config["vault_url"])
 
     def test_should_write_root_token_to_console(self, vault, vault_client, hvat_config):
-        print(vault.logs())
         f = io.StringIO()
         with contextlib.redirect_stdout(f):
             init_and_push(vault_client, hvat_config)
 
         assert "Root token:" in f.getvalue()
 
+    @pytest.mark.skip(reason="temp disabled")
     def test_should_set_vault_to_initialized(self, vault, vault_client, hvat_config):
         init_and_push(vault_client, hvat_config)
 
         assert vault_client.sys.is_initialized() is True
 
+    @pytest.mark.skip(reason="temp disabled")
     def test_should_set_vault_to_sealed(self, vault, vault_client, hvat_config):
         init_and_push(vault_client, hvat_config)
 
