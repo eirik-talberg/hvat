@@ -71,7 +71,7 @@ class TestInitWithStdout:
     def test_should_set_vault_to_initialized(self, vault, vault_client, hvat_config):
         with contextlib.redirect_stdout(io.StringIO()):
             init_and_push(vault_client, hvat_config)
-            
+
         assert vault_client.sys.is_initialized() is True
 
     def test_should_set_vault_to_sealed(self, vault, vault_client, hvat_config):
