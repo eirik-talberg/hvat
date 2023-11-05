@@ -57,6 +57,7 @@ class TestInitWithStdout:
 
         print(client.info())
         print(vault.logs())
+        print(vault.reload())
         print(vault.status)
         print(vault.diff())
         yield vault
