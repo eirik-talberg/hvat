@@ -1,6 +1,5 @@
 import contextlib
 import io
-import random
 import time
 
 import docker
@@ -16,7 +15,7 @@ class TestInitWithStdout:
 
     @pytest.fixture
     def vault_port(self) -> int:
-        return random.randint(50000, 65000)
+        return 8200
 
     @pytest.fixture
     def hvat_config(self, vault_port: int) -> dict:
